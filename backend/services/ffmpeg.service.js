@@ -2,40 +2,54 @@ const { spawn } = require("child_process");
 const path = require("path");
 
 function extractAudio(jobFolder, inputFile) {
-
     return new Promise((resolve, reject) => {
-
         const inputPath = path.join(jobFolder, inputFile);
         const outputPath = path.join(jobFolder, "audio.wav");
 
         const ffmpeg = spawn("ffmpeg", [
             "-y",
-            "-i", inputPath,
+
+            "-i",
+            inputPath,
+
             "-vn",
-            "-acodec", "pcm_s16le",
-            "-ar", "16000",
-            "-ac", "1",
-            outputPath
+
+            "-acodec",
+            "pcm_s16le",
+
+            "-ar",
+            "44100",
+
+            "-ac",
+            "2",
+
+            outputPath,
         ]);
 
-        ffmpeg.stderr.on("data", data => {
-            console.log(data.toString());
+        let stderr = "";
+
+        ffmpeg.stderr.on("data", (data) => {
+            stderr += data.toString();
         });
 
-        ffmpeg.on("close", code => {
+        ffmpeg.on("error", (err) => {
+            reject(err);
+        });
 
-            if (code === 0) {
-                resolve(outputPath);
-            } else {
-                reject(new Error("FFmpeg failed."));
+        ffmpeg.on("close", (code) => {
+            if (code !== 0) {
+                return reject(
+                    new Error(
+                        `FFmpeg exited with code ${code}\n\n${stderr}`
+                    )
+                );
             }
 
+            resolve(outputPath);
         });
-
     });
-
 }
 
 module.exports = {
-    extractAudio
+    extractAudio,
 };

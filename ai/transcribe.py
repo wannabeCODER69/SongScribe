@@ -8,18 +8,22 @@ MODEL_SIZE = "small"
 
 
 def main():
+
     if len(sys.argv) != 2:
-        print("Usage:")
-        print("python transcribe.py <audio-file>")
+        print(json.dumps({
+            "success": False,
+            "error": "Missing audio file."
+        }))
         return
 
     audio_path = sys.argv[1]
 
     if not os.path.exists(audio_path):
-        print(f"File not found: {audio_path}")
+        print(json.dumps({
+            "success": False,
+            "error": "Audio file not found."
+        }))
         return
-
-    print("Loading Whisper model...")
 
     model = WhisperModel(
         MODEL_SIZE,
@@ -27,54 +31,44 @@ def main():
         compute_type="int8"
     )
 
-    print("Transcribing...\n")
-
     segments, info = model.transcribe(
         audio_path,
         beam_size=5,
         vad_filter=True
     )
 
-    transcript = {
+    result = {
+        "success": True,
         "language": info.language,
-        "language_probability": round(info.language_probability, 3),
+        "confidence": round(info.language_probability, 3),
         "segments": []
     }
 
-    print("-" * 70)
-
     for segment in segments:
-        print(
-            f"[{segment.start:.2f}s -> {segment.end:.2f}s] {segment.text}"
-        )
-
-        transcript["segments"].append({
+        result["segments"].append({
             "start": round(segment.start, 2),
             "end": round(segment.end, 2),
             "text": segment.text.strip()
         })
-
-    print("-" * 70)
-
-    print(f"\nLanguage: {info.language}")
-    print(f"Confidence: {info.language_probability:.3f}")
 
     output_path = os.path.join(
         os.path.dirname(audio_path),
         "transcript.json"
     )
 
-    with open(output_path, "w", encoding="utf-8") as f:
+    with open(
+        output_path,
+        "w",
+        encoding="utf-8"
+    ) as f:
         json.dump(
-            transcript,
+            result,
             f,
             ensure_ascii=False,
             indent=4
         )
 
-    print(f"\nTranscript saved to:\n{output_path}")
-
-    print("\nDone!")
+    print(json.dumps(result, ensure_ascii=False))
 
 
 if __name__ == "__main__":

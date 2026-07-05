@@ -4,58 +4,61 @@ const API_URL = "https://api.acoustid.org/v2/lookup";
 
 async function identifySong({ fingerprint, duration }) {
     if (!process.env.ACOUSTID_API_KEY) {
-        throw new Error(
-            "Missing ACOUSTID_API_KEY in environment variables."
-        );
+        throw new Error("Missing ACOUSTID_API_KEY");
     }
 
-    const url =
-        API_URL +
-        "?" +
-        querystring.stringify({
-            client: process.env.ACOUSTID_API_KEY,
-            meta: "recordings",
-            duration,
-            fingerprint,
-        });
+    const body = querystring.stringify({
+        client: process.env.ACOUSTID_API_KEY,
+        fingerprint,
+        duration: Math.round(duration),
+        meta: "recordings",
+        format: "json",
+    });
 
-    const response = await fetch(url);
+    console.log("\n========== ACOUSTID REQUEST ==========");
+    console.log("POST", API_URL);
+    console.log("Duration:", Math.round(duration));
+    console.log("Fingerprint length:", fingerprint.length);
+    console.log("======================================\n");
 
-    if (!response.ok) {
-        throw new Error(
-            `AcoustID request failed (${response.status})`
-        );
-    }
+    const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body,
+    });
 
     const data = await response.json();
 
-    if (data.status !== "ok") {
-        throw new Error(
-            data.error?.message || "AcoustID lookup failed."
-        );
+    console.log("\n========== ACOUSTID RESPONSE ==========");
+    console.log(JSON.stringify(data, null, 2));
+    console.log("======================================\n");
+
+    if (!response.ok) {
+        throw new Error(`AcoustID request failed (${response.status})`);
     }
 
     if (!Array.isArray(data.results) || data.results.length === 0) {
-        return null;
+        return {
+            found: false,
+            score: null,
+            recordingId: null,
+            title: null,
+        };
     }
 
-    const best = data.results.reduce((highest, current) =>
-        current.score > highest.score ? current : highest
+    const best = data.results.reduce((a, b) =>
+        a.score > b.score ? a : b
     );
 
-    if (
-        !Array.isArray(best.recordings) ||
-        best.recordings.length === 0
-    ) {
-        return null;
-    }
-
-    const recording = best.recordings[0];
+    const recording = best.recordings?.[0];
 
     return {
+        found: true,
         score: best.score,
-        recordingId: recording.id,
-        title: recording.title || null,
+        recordingId: recording?.id ?? null,
+        title: recording?.title ?? null,
     };
 }
 

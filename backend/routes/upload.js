@@ -40,10 +40,19 @@ router.post("/", upload.single("file"), async (req, res) => {
         res.json({
             success: true,
             jobId: req.jobId,
+            status: result.status,
+
             fingerprint: result.fingerprint,
+
+            match: result.match,
+
+            transcript: result.transcript,
+
+            audioPath: result.audioPath,
         });
+
     } catch (err) {
-        console.error(err);
+        console.error("[UPLOAD ERROR]", err);
 
         res.status(500).json({
             success: false,
