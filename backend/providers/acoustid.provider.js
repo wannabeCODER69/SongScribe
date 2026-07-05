@@ -3,6 +3,12 @@ const querystring = require("querystring");
 const API_URL = "https://api.acoustid.org/v2/lookup";
 
 async function identifySong({ fingerprint, duration }) {
+    if (!process.env.ACOUSTID_API_KEY) {
+        throw new Error(
+            "Missing ACOUSTID_API_KEY in environment variables."
+        );
+    }
+
     const url =
         API_URL +
         "?" +
@@ -23,19 +29,33 @@ async function identifySong({ fingerprint, duration }) {
 
     const data = await response.json();
 
-    if (!data.results || data.results.length === 0) {
+    if (data.status !== "ok") {
+        throw new Error(
+            data.error?.message || "AcoustID lookup failed."
+        );
+    }
+
+    if (!Array.isArray(data.results) || data.results.length === 0) {
         return null;
     }
 
-    const best = data.results[0];
+    const best = data.results.reduce((highest, current) =>
+        current.score > highest.score ? current : highest
+    );
 
-    if (!best.recordings || best.recordings.length === 0) {
+    if (
+        !Array.isArray(best.recordings) ||
+        best.recordings.length === 0
+    ) {
         return null;
     }
+
+    const recording = best.recordings[0];
 
     return {
         score: best.score,
-        recordingId: best.recordings[0].id,
+        recordingId: recording.id,
+        title: recording.title || null,
     };
 }
 
