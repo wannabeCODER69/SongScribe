@@ -1,9 +1,13 @@
 const path = require("path");
+const fs = require("fs").promises;
 
 const { extractAudio } = require("./ffmpeg.service");
 const { generateFingerprint } = require("./fingerprint.service");
 const { identifyFingerprint } = require("./metadata.service");
 const { transcribeAudio } = require("./transcription.service");
+const { generateTXT, generateSRT, generateVTT } = require("./subtitle.service");
+const { getSynchronizedLyrics } = require("./lyrics.service");
+const { parseLRC } = require("./lrc.service");
 
 async function processUpload(jobFolder, uploadedFilename) {
 
@@ -22,21 +26,40 @@ async function processUpload(jobFolder, uploadedFilename) {
         fingerprint
     );
 
-    // If found, don't run Whisper
+    // Try synchronized lyrics if AcoustID match is found
     if (match.found) {
-        return {
-            status: "identified",
+        try {
+            const syncedLyrics = await getSynchronizedLyrics(match);
+            if (syncedLyrics) {
+                const transcript = parseLRC(syncedLyrics);
 
-            fingerprint,
+                // Write transcript.json and generate TXT/SRT/VTT
+                await fs.writeFile(
+                    path.join(jobFolder, "transcript.json"),
+                    JSON.stringify(transcript, null, 4),
+                    "utf8"
+                );
 
-            match,
+                await Promise.all([
+                    generateTXT(transcript, jobFolder),
+                    generateSRT(transcript, jobFolder),
+                    generateVTT(transcript, jobFolder)
+                ]);
 
-            audioPath: null,
-            transcript: null
-        };
+                return {
+                    status: "lyrics",
+                    fingerprint,
+                    match,
+                    audioPath: null,
+                    transcript
+                };
+            }
+        } catch (err) {
+            console.error("[LYRICS PIPELINE ERROR] Failed to fetch or generate lyrics. Falling back to Whisper.", err);
+        }
     }
 
-    // Extract WAV
+    // Extract WAV (Whisper fallback)
     await extractAudio(
         jobFolder,
         uploadedFilename
@@ -52,15 +75,21 @@ async function processUpload(jobFolder, uploadedFilename) {
         audioPath
     );
 
+    try {
+        await Promise.all([
+            generateTXT(transcript, jobFolder),
+            generateSRT(transcript, jobFolder),
+            generateVTT(transcript, jobFolder)
+        ]);
+    } catch (err) {
+        console.error("[SUBTITLE GENERATION ERROR]", err);
+    }
+
     return {
         status: "transcribed",
-
         fingerprint,
-
         match,
-
         audioPath,
-
         transcript
     };
 }

@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 const uploadRoutes = require("./upload");
+const downloadRoutes = require("./download");
 
 // Home
 router.get("/", (req, res) => {
@@ -28,5 +29,8 @@ router.get("/health", (req, res) => {
 
 // Upload routes
 router.use("/upload", uploadRoutes);
+
+// Download routes
+router.use("/download", downloadRoutes);
 
 module.exports = router;

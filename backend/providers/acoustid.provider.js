@@ -11,7 +11,7 @@ async function identifySong({ fingerprint, duration }) {
         client: process.env.ACOUSTID_API_KEY,
         fingerprint,
         duration: Math.round(duration),
-        meta: "recordings",
+        meta: "recordings releases",
         format: "json",
     });
 
@@ -45,6 +45,9 @@ async function identifySong({ fingerprint, duration }) {
             score: null,
             recordingId: null,
             title: null,
+            artist: null,
+            album: null,
+            duration: null,
         };
     }
 
@@ -59,6 +62,9 @@ async function identifySong({ fingerprint, duration }) {
         score: best.score,
         recordingId: recording?.id ?? null,
         title: recording?.title ?? null,
+        artist: recording?.artists?.[0]?.name ?? null,
+        album: recording?.releases?.[0]?.title ?? null,
+        duration: duration || null,
     };
 }
 

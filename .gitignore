@@ -1,15 +1,108 @@
-# Node modules
-**/node_modules/
+# =========================
+# Node.js
+# =========================
 
-# Environment variables
-**/.env
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
 
-# Generated uploads
+
+# =========================
+# Python
+# =========================
+
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+.venv/
+.venv313/
+venv/
+env/
+
+
+# =========================
+# Environment Variables
+# =========================
+
+.env
+.env.*
+!.env.example
+
+
+# =========================
+# Job Files
+# =========================
+
 backend/jobs/
+jobs/
 
+
+# =========================
+# Whisper Models
+# =========================
+
+models/
+cache/
+downloads/
+
+
+# =========================
+# VS Code
+# =========================
+
+.vscode/
+
+
+# =========================
+# OS Files
+# =========================
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+
+# =========================
 # Logs
+# =========================
+
 *.log
 
-# Operating System
-Thumbs.db
-.DS_Store
+
+# =========================
+# Temporary Files
+# =========================
+
+*.tmp
+*.temp
+
+
+# =========================
+# Build
+# =========================
+
+dist/
+build/
+
+
+# =========================
+# Coverage
+# =========================
+
+coverage/
+
+
+# =========================
+# Misc
+# =========================
+
+*.bak
+*.swp
+*.swo

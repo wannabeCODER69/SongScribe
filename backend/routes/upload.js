@@ -31,6 +31,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.post("/", upload.single("file"), async (req, res) => {
+    console.log("UPLOAD REQUEST RECEIVED");
+
     try {
         const result = await processUpload(
             req.jobFolder,
