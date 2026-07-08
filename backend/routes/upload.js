@@ -51,6 +51,8 @@ router.post("/", upload.single("file"), async (req, res) => {
             transcript: result.transcript,
 
             audioPath: result.audioPath,
+
+            audioUrl: `/api/jobs/${req.jobId}/audio`,
         });
 
     } catch (err) {
