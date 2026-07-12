@@ -106,3 +106,5 @@ coverage/
 *.bak
 *.swp
 *.swo
+# Branding assets (temporary)
+branding/
