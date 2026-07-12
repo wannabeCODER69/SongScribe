@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="branding/songscribe-icon-v1.png" alt="SongScribe Logo" width="180">
+ <img src="branding/songscribe-icon.png" alt="SongScribe Logo" width="180">
 </p>
 
 <h1 align="center">SongScribe</h1>
