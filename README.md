@@ -30,23 +30,6 @@ This hybrid pipeline produces better subtitles while significantly reducing unne
 
 ---
 
-# 📸 Screenshots
-
-## Dashboard
-
-<p align="center">
-<img src="docs/screenshots/dashboard.png" width="900">
-</p>
-
-## Processing
-
-<p align="center">
-<img src="docs/screenshots/processing.png" width="900">
-</p>
-
-> *(Viewer screenshots will be added after the interactive playback page is completed.)*
-
----
 
 # ✨ Features
 
