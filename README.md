@@ -5,16 +5,13 @@
 <h1 align="center">SongScribe</h1>
 
 <p align="center">
-  <strong>AI-powered subtitle generation that prioritizes synchronized lyrics and intelligently falls back to AI transcription when needed.</strong>
-</p>
-
-<p align="center">
 
 ![Status](https://img.shields.io/badge/status-active%20development-8A2BE2)
 ![Frontend](https://img.shields.io/badge/frontend-React-61DAFB)
 ![Backend](https://img.shields.io/badge/backend-Express-000000)
 ![Python](https://img.shields.io/badge/AI-Python-3776AB)
-![License](https://img.shields.io/badge/license-MIT-green)
+![License](https://img.shields.io/badge/license-All%20Rights%20Reserved-red)
+![Source](https://img.shields.io/badge/source-available-blue)
 
 </p>
 
