@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
 
 import App from "./App.jsx";
 import "./index.css";
@@ -8,8 +9,10 @@ import { SongScribeProvider } from "./context/SongScribeContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <SongScribeProvider>
-      <App />
-    </SongScribeProvider>
+    <BrowserRouter>
+      <SongScribeProvider>
+        <App />
+      </SongScribeProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );

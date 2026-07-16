@@ -4,6 +4,7 @@ const router = express.Router();
 
 const uploadRoutes = require("./upload");
 const downloadRoutes = require("./download");
+const viewerRoutes = require("./viewer");
 
 // Home
 router.get("/", (req, res) => {
@@ -32,5 +33,8 @@ router.use("/upload", uploadRoutes);
 
 // Download routes
 router.use("/download", downloadRoutes);
+
+// Viewer routes
+router.use("/viewer", viewerRoutes);
 
 module.exports = router;
