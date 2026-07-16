@@ -7,24 +7,24 @@ const downloadRoutes = require("./download");
 
 // Home
 router.get("/", (req, res) => {
-    res.json({
-        message: "Welcome to SongScribe!"
-    });
+  res.json({
+    message: "Welcome to SongScribe!",
+  });
 });
 
 // About
 router.get("/about", (req, res) => {
-    res.json({
-        app: "SongScribe",
-        version: "1.0"
-    });
+  res.json({
+    app: "SongScribe",
+    version: "1.0",
+  });
 });
 
 // Health
 router.get("/health", (req, res) => {
-    res.json({
-        status: "OK"
-    });
+  res.json({
+    status: "OK",
+  });
 });
 
 // Upload routes

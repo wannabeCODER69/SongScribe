@@ -125,14 +125,15 @@ The first public release will be considered complete when:
 - Active subtitle highlighting works.
 - Auto-scroll works.
 - Documentation is complete.
+
 # SongScribe TODO
 
 ## Progress
 
-Backend        ██████████ 95%
+Backend ██████████ 95%
 
-Frontend       ███████░░░ 70%
+Frontend ███████░░░ 70%
 
-Documentation  ████████░░ 80%
+Documentation ████████░░ 80%
 
-Overall        ████████░░ 82%
+Overall ████████░░ 82%

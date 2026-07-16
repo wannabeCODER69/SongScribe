@@ -1,9 +1,26 @@
 {
+  "name": "songscribe",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check"
+  },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.2",
     "axios": "^1.18.1",
     "framer-motion": "^12.42.2",
-    "lucide-react": "^1.23.0",
+    "lucide-react": "^0.542.0",
     "tailwindcss": "^4.3.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "eslint": "^9.39.5",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.7.0",
+    "prettier": "^3.9.5"
   }
 }

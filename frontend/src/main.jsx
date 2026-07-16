@@ -7,9 +7,9 @@ import "./index.css";
 import { SongScribeProvider } from "./context/SongScribeContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <React.StrictMode>
-        <SongScribeProvider>
-            <App />
-        </SongScribeProvider>
-    </React.StrictMode>
+  <React.StrictMode>
+    <SongScribeProvider>
+      <App />
+    </SongScribeProvider>
+  </React.StrictMode>
 );

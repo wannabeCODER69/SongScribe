@@ -27,7 +27,6 @@ This hybrid pipeline produces better subtitles while significantly reducing unne
 
 ---
 
-
 # ✨ Features
 
 - 🎵 Audio fingerprinting using Chromaprint
