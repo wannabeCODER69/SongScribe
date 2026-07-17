@@ -1,5 +1,5 @@
 <p align="center">
- <img src="branding/songscribe-icon.png" alt="SongScribe Logo" width="180">
+  <img src="branding/songscribe-icon.png" alt="SongScribe Logo" width="180">
 </p>
 
 <h1 align="center">SongScribe</h1>
@@ -19,11 +19,11 @@
 
 ## 🎵 Overview
 
-SongScribe is an AI-powered subtitle generation application designed to produce accurate subtitle files for both **music** and **spoken audio**.
+SongScribe is an AI-powered subtitle generation application designed to generate accurate subtitles for both **music** and **spoken audio**.
 
-Instead of relying entirely on speech transcription, SongScribe intelligently identifies songs using audio fingerprinting and attempts to retrieve **professionally synchronized lyrics** first. Only when synchronized lyrics are unavailable does it fall back to AI transcription.
+Rather than relying entirely on speech transcription, SongScribe intelligently identifies songs using audio fingerprinting and attempts to retrieve professionally synchronized lyrics first. When synchronized lyrics are unavailable, it automatically falls back to AI transcription using Faster-Whisper.
 
-This hybrid pipeline produces better subtitles while significantly reducing unnecessary transcription work.
+The resulting transcript can be explored in an interactive viewer or exported as industry-standard subtitle formats.
 
 ---
 
@@ -34,11 +34,15 @@ This hybrid pipeline produces better subtitles while significantly reducing unne
 - 🎼 Metadata retrieval through MusicBrainz
 - 📚 Synchronized lyrics via LRCLIB
 - 🤖 AI transcription fallback using Faster-Whisper
-- 🎬 Generate professional subtitle files
+- 📝 Unified transcript generation
+- 🎧 Interactive transcript viewer
+- 🖱 Click transcript to seek playback
+- ✨ Active transcript highlighting
+- 📜 Automatic transcript scrolling
+- 🎬 Export subtitles as:
   - TXT
   - SRT
   - VTT
-- ⚡ Smart pipeline that prioritizes synchronized lyrics before transcription
 - 🌙 Modern React interface
 - 📂 Local processing with downloadable outputs
 
@@ -71,8 +75,10 @@ This hybrid pipeline produces better subtitles while significantly reducing unne
                     ▼
           Unified Transcript
                     │
-                    ▼
-            TXT • SRT • VTT
+      ┌─────────────┼─────────────┐
+      ▼             ▼             ▼
+ transcript.txt  subtitles   Interactive
+                 (.srt/.vtt)   Viewer
 ```
 
 ---
@@ -82,6 +88,7 @@ This hybrid pipeline produces better subtitles while significantly reducing unne
 ## Frontend
 
 - React
+- React Router
 - Vite
 - Context API
 - Axios
@@ -110,6 +117,12 @@ SongScribe/
 
 ├── frontend/
 │   ├── src/
+│   │   ├── pages/
+│   │   │   ├── Home.jsx
+│   │   │   └── ViewerPage.jsx
+│   │   ├── context/
+│   │   ├── components/
+│   │   └── ...
 │   ├── public/
 │   └── package.json
 │
@@ -131,7 +144,7 @@ SongScribe/
 
 # 🚀 Getting Started
 
-## Clone
+## Clone the repository
 
 ```bash
 git clone https://github.com/wannabeCODER69/SongScribe.git
@@ -173,42 +186,44 @@ npm run dev
 - AcoustID integration
 - MusicBrainz metadata lookup
 - LRCLIB synchronized lyrics retrieval
+- Faster-Whisper transcription fallback
+- Unified transcript generation
+- Interactive transcript viewer
+- Click-to-seek playback
+- Active transcript highlighting
+- Automatic transcript scrolling
 - TXT export
 - SRT export
 - VTT export
-- Modern dark UI
 
 ---
 
 ## 🚧 In Progress
 
-- Faster-Whisper transcription pipeline
-- Unified transcript generation
-- Interactive Viewer
-- Click-to-seek playback
-- Active subtitle highlighting
-- Auto-scroll synchronization
+- Viewer UI polish
+- Improved responsive layout
+- Minor UX refinements
 
 ---
 
 ## 💡 Future
 
 - Batch processing
-- Docker support
-- Public hosted demo
 - Plugin architecture
+- Desktop application
+- Optional cloud deployment
 
 ---
 
 # 🤝 Contributing
 
-Contributions, suggestions and bug reports are always welcome.
+Suggestions, bug reports, and feature requests are always welcome.
 
-If you have an idea to improve SongScribe, feel free to open an Issue or submit a Pull Request.
+If you'd like to contribute code, please open an Issue first so we can discuss the proposed change.
 
 ---
 
-# 📜 Licensing
+# 📜 License
 
 Copyright © 2026 Gairik Kairy.
 
@@ -216,9 +231,10 @@ This repository is publicly available for learning, code review, and portfolio d
 
 You are welcome to explore the source code, learn from the implementation, and suggest improvements.
 
-However, copying, redistributing, modifying, or using substantial portions of this project in another project without prior written permission from the author is **not permitted**.
+However, copying, redistributing, modifying, or using substantial portions of this project without prior written permission from the author is **not permitted**.
 
 If you'd like to use any part of SongScribe, please contact the author first.
+
 ---
 
 <p align="center">
