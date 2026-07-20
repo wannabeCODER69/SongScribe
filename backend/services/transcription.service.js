@@ -7,6 +7,10 @@ async function transcribeAudio(audioPath) {
 
     const python = process.env.PYTHON_PATH || "python";
 
+    console.log("[NODE] Python executable:", python);
+    console.log("[NODE] Python script:", script);
+    console.log("[NODE] Audio path:", audioPath);
+
     const processPy = spawn(python, [script, audioPath], {
       windowsHide: true,
     });
@@ -15,20 +19,27 @@ async function transcribeAudio(audioPath) {
     let stderr = "";
 
     processPy.stdout.on("data", (data) => {
-      stdout += data.toString();
+      const text = data.toString();
+      stdout += text;
+      console.log("[PY STDOUT]", text.trim());
     });
 
     processPy.stderr.on("data", (data) => {
-      stderr += data.toString();
+      const text = data.toString();
+      stderr += text;
+      console.error("[PY STDERR]", text.trim());
     });
 
     processPy.on("error", (err) => {
+      console.error("[NODE] Failed to start Python:", err);
       reject(err);
     });
 
     processPy.on("close", (code) => {
+      console.log("[NODE] Python exited with code:", code);
+
       if (code !== 0) {
-        return reject(new Error(stderr));
+        return reject(new Error(stderr || `Python exited with code ${code}`));
       }
 
       try {
@@ -41,7 +52,19 @@ async function transcribeAudio(audioPath) {
         resolve(result);
       } catch (err) {
         reject(
-          new Error(["Unable to parse Whisper output.", "", err.message, "", stdout].join("\n"))
+          new Error(
+            [
+              "Unable to parse Whisper output.",
+              "",
+              err.message,
+              "",
+              "----- STDOUT -----",
+              stdout,
+              "",
+              "----- STDERR -----",
+              stderr,
+            ].join("\n")
+          )
         );
       }
     });

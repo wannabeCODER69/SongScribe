@@ -1,98 +1,98 @@
+import { NavLink } from "react-router-dom";
 import {
-  AudioWaveform,
-  CircleHelp,
-  Clock3,
-  FileAudio,
-  FolderDown,
-  LayoutDashboard,
+  LayoutGrid,
+  FolderKanban,
+  History,
+  DownloadCloud,
   Settings,
   Sparkles,
+  HelpCircle,
 } from "lucide-react";
-import { motion } from "framer-motion";
 
-const navItems = [
-  { icon: LayoutDashboard, label: "Dashboard", active: true },
-  { icon: FileAudio, label: "Projects" },
-  { icon: Clock3, label: "History" },
-  { icon: FolderDown, label: "Exports" },
-  { icon: Settings, label: "Settings" },
+const NAV_ITEMS = [
+  { to: "/", label: "Dashboard", icon: LayoutGrid, end: true },
+  { to: "/projects", label: "Projects", icon: FolderKanban },
+  { to: "/history", label: "History", icon: History },
+  { to: "/saved", label: "Exports", icon: DownloadCloud },
+  { to: "/settings", label: "Settings", icon: Settings },
 ];
 
-function Sidebar() {
+function WaveLogo() {
+  const heights = [7, 13, 18, 11, 15];
   return (
-    <aside className="flex h-full w-[76px] shrink-0 flex-col overflow-y-auto border-r border-white/10 bg-black/20 px-3 py-5 backdrop-blur-2xl lg:w-[236px] lg:px-4">
-      <div className="flex items-center gap-3 px-0 lg:px-2">
-        <div className="grid size-11 shrink-0 place-items-center rounded-[18px] border border-violet-300/25 bg-violet-500/15 shadow-[0_0_40px_rgba(139,92,246,0.22)]">
-          <AudioWaveform className="text-violet-200" size={23} />
-        </div>
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      {heights.map((h, i) => (
+        <rect key={i} x={1 + i * 3.7} y={10 - h / 2} width="2.2" height={h} rx="1.1" fill="#fff" />
+      ))}
+    </svg>
+  );
+}
 
-        <div className="hidden min-w-0 lg:block">
-          <h1 className="truncate text-[18px] font-semibold tracking-[-0.03em] text-white">
-            SongScribe
-          </h1>
-          <p className="truncate text-[12px] font-medium text-white/42">AI subtitle studio</p>
+export default function Sidebar() {
+  return (
+    <aside className="relative flex h-full w-[272px] shrink-0 flex-col overflow-hidden border-r border-border bg-surface-soft">
+      {/* Localized ambient lighting for panel depth — distinct from, and additional to,
+          the two global radial lights baked into the app-wide atmosphere background. */}
+      <div className="ambient-glow -left-20 -top-16 h-72 w-72 bg-primary-blue/[0.14]" />
+      <div className="ambient-glow -left-14 top-1/3 h-80 w-80 bg-primary-indigo/[0.12]" />
+      <div className="ambient-glow bottom-0 -left-24 h-72 w-72 bg-primary-purple/[0.10]" />
+
+      {/* Logo */}
+      <div className="relative z-10 flex items-center gap-3 px-6 pb-6 pt-7">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary-blue via-primary-indigo to-primary-purple shadow-btnGlow">
+          <WaveLogo />
+        </div>
+        <div>
+          <p className="text-[16px] font-bold leading-tight text-ink-primary">SongScribe</p>
+          <p className="text-[11.5px] leading-tight text-ink-muted">AI subtitle studio</p>
         </div>
       </div>
 
-      <nav className="mt-8 space-y-1.5">
-        {navItems.map((item) => {
-          const Icon = item.icon;
-
-          return (
-            <button
-              className={`group relative flex h-11 w-full items-center justify-center gap-3 rounded-2xl px-0 text-[14px] font-medium transition lg:justify-start lg:px-3 ${
-                item.active
-                  ? "text-white"
-                  : "text-white/48 hover:bg-white/[0.05] hover:text-white/78"
-              }`}
-              key={item.label}
-              title={item.label}
-              type="button"
-            >
-              {item.active && (
-                <motion.span
-                  className="absolute inset-0 rounded-2xl border border-white/10 bg-white/[0.075] shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
-                  layoutId="active-nav"
-                  transition={{
-                    type: "spring",
-                    bounce: 0.18,
-                    duration: 0.55,
-                  }}
-                />
-              )}
-              <Icon
-                className="relative z-10 shrink-0"
-                size={18}
-                strokeWidth={item.active ? 2.3 : 2}
-              />
-              <span className="relative z-10 hidden truncate lg:inline">{item.label}</span>
-            </button>
-          );
-        })}
+      {/* Nav */}
+      <nav className="relative z-10 flex flex-col gap-1.5 px-4">
+        {NAV_ITEMS.map(({ to, label, icon: Icon, end }) => (
+          <NavLink
+            key={to}
+            to={to}
+            end={end}
+            className={({ isActive }) =>
+              `flex items-center gap-3 rounded-xl px-4 py-2.5 text-[14px] font-medium transition-colors ${
+                isActive
+                  ? "glass-panel bg-gradient-to-r from-primary-blue/15 via-primary-indigo/15 to-primary-purple/15 text-ink-primary shadow-btnGlow"
+                  : "text-ink-muted hover:bg-surface-hover hover:text-ink-body"
+              }`
+            }
+          >
+            <Icon size={17} strokeWidth={2} />
+            {label}
+          </NavLink>
+        ))}
       </nav>
 
-      <div className="mt-auto hidden rounded-[22px] border border-violet-300/16 bg-violet-400/[0.07] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] lg:block">
-        <div className="mb-3 flex items-center gap-2 text-[13px] font-semibold text-violet-100">
-          <Sparkles size={16} />
-          Studio ready
+      <div className="pointer-events-none flex-1" aria-hidden="true" />
+
+      {/* Studio ready panel */}
+      <div className="relative z-10 mx-4 mb-5 rounded-xl3 glass-panel px-4 py-4 shadow-premium">
+        <div className="mb-2 flex items-center gap-2">
+          <Sparkles size={15} className="text-primary-purple" />
+          <span className="text-[13.5px] font-semibold text-ink-primary">Studio ready</span>
         </div>
-        <p className="text-[12px] leading-5 text-white/46">
+        <p className="mb-4 text-[12.5px] leading-relaxed text-ink-body">
           Upload clean audio for sharper lyric timing and stronger AcoustID matches.
         </p>
         <button
-          className="mt-4 flex h-9 w-full items-center justify-center gap-2 rounded-[14px] bg-white/[0.08] text-[12px] font-semibold text-white/78 transition hover:bg-white/[0.12]"
           type="button"
+          className="glass-btn flex w-full items-center justify-center gap-2 rounded-2xl py-2 text-[12.5px] font-semibold text-ink-primary"
         >
-          <CircleHelp size={14} />
+          <HelpCircle size={14} />
           Quick guide
         </button>
       </div>
 
-      <p className="mt-4 hidden px-2 text-[11px] font-medium text-white/28 lg:block">
-        SongScribe 2026
-      </p>
+      {/* Footer */}
+      <div className="relative z-10 px-6 pb-6 text-[11.5px] text-ink-muted">
+        <p>SongScribe 2026</p>
+      </div>
     </aside>
   );
 }
-
-export default Sidebar;

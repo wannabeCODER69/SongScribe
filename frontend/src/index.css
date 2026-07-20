@@ -1,64 +1,108 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  color-scheme: dark;
-  font-family:
-    Inter,
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+html,
+body {
+  background-color: #07050D;
 }
 
 * {
-  box-sizing: border-box;
-}
-
-html,
-body,
-#root {
-  height: 100%;
-  width: 100%;
-}
-
-body {
-  margin: 0;
-  overflow: hidden;
-  background: #07050d;
-}
-
-button,
-input {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-}
-
-.transcript-scroll {
   scrollbar-width: thin;
-  scrollbar-color: rgba(196, 181, 253, 0.42) rgba(255, 255, 255, 0.05);
+  scrollbar-color: #6366F1 #10101a;
 }
 
-.transcript-scroll::-webkit-scrollbar {
-  width: 8px;
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
-
-.transcript-scroll::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
+  background: #10101a;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.05);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #8B5CF6, #6366F1);
+  border-radius: 999px;
 }
 
-.transcript-scroll::-webkit-scrollbar-thumb {
-  border: 2px solid transparent;
+/* ══════════════════════════════════════════════════════════════════
+   Design System v1 — §1/§2/§3: layered background + radial lighting
+   + grid overlay. Values copied verbatim from the design system doc.
+   ══════════════════════════════════════════════════════════════════ */
+.app-atmosphere {
+  background-image:
+    radial-gradient(circle at 18% 12%, rgba(139, 92, 246, 0.24), transparent 34%),
+    radial-gradient(circle at 82% 8%, rgba(217, 70, 239, 0.13), transparent 28%),
+    linear-gradient(135deg, #07050D 0%, #0B0714 42%, #05050A 100%);
+}
+
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.45;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Localized glow accent (sidebar / panel depth) — separate from the two global
+   radial lights baked into .app-atmosphere, which must stay exactly as specified. */
+.ambient-glow {
+  position: absolute;
   border-radius: 999px;
-  background: rgba(196, 181, 253, 0.46);
-  background-clip: content-box;
+  filter: blur(70px);
+  pointer-events: none;
+}
+
+/* Dashed dropzone border (wider dash gap than Tailwind's default border-dashed) */
+.dropzone-dashed {
+  background-image: repeating-linear-gradient(
+      0deg, rgba(139,92,246,0.8) 0, rgba(139,92,246,0.8) 8px, transparent 8px, transparent 16px
+    ),
+    repeating-linear-gradient(90deg, rgba(139,92,246,0.8) 0, rgba(139,92,246,0.8) 8px, transparent 8px, transparent 16px),
+    repeating-linear-gradient(180deg, rgba(139,92,246,0.8) 0, rgba(139,92,246,0.8) 8px, transparent 8px, transparent 16px),
+    repeating-linear-gradient(270deg, rgba(139,92,246,0.8) 0, rgba(139,92,246,0.8) 8px, transparent 8px, transparent 16px);
+  background-size: 2px 100%, 100% 2px, 2px 100%, 100% 2px;
+  background-position: 0 0, 0 0, 100% 0, 0 100%;
+  background-repeat: no-repeat;
+}
+
+/* ── §5/§6: Card surface + glassmorphism ── */
+.glass-panel {
+  background-color: rgba(16, 16, 26, 0.78);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ── §16: Secondary button ── */
+.glass-btn {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+.glass-btn:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(139, 92, 246, 0.4);
+}
+
+/* ── §15: Primary button — gradient stacks top→bottom, brightness +10% on hover ── */
+.btn-primary-gradient {
+  background-image: linear-gradient(180deg, #3B82F6 0%, #6366F1 50%, #8B5CF6 100%);
+  box-shadow: 0 0 35px rgba(139, 92, 246, 0.25);
+  transition: filter 150ms ease;
+}
+.btn-primary-gradient:hover {
+  filter: brightness(1.1);
+}
+
+/* Skeleton placeholder dash, used in the empty Song Information state */
+.skel-dash {
+  height: 2px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
 }

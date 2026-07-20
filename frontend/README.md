@@ -1,16 +1,17 @@
-# React + Vite
+# SongScribe
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+AI subtitle generator for music — React + Vite + Tailwind, Axios for API calls, Context API for transcription state.
 
-Currently, two official plugins are available:
+## Setup
+```
+npm install
+npm run dev
+```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Set `VITE_API_BASE_URL` in a `.env` file to point at your backend (defaults to `/api`).
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Backend contract expected by src/api/transcriptionService.js
+- `POST /transcriptions` (multipart `audio`) → `{ transcriptionId }`
+- `GET /transcriptions/:id/status` → `{ status, progress, currentStepIndex }`
+- `GET /transcriptions/:id` → `{ segments: [{start,end,text}], language, confidence, songInfo }`
+- `GET /transcriptions/:id/download?format=srt|txt|vtt` → file blob
