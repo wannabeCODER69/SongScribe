@@ -1,139 +1,173 @@
-# SongScribe TODO
+# SongScribe Roadmap
 
-This document tracks the remaining work before the first public release of SongScribe.
-
----
-
-# 🚀 High Priority
-
-## Interactive Viewer
-
-- [ ] Create `/viewer/:jobId`
-- [ ] Native HTML audio player
-- [ ] Display transcript
-- [ ] Click transcript → seek audio
-- [ ] Highlight active subtitle
-- [ ] Auto-scroll active subtitle
+> Current Version: v0.3.x
+>
+> Focus: Accurate multilingual music transcription.
 
 ---
+
+# Phase 1 — Core Platform ✅
 
 ## Backend
 
-- [ ] Finalize Faster-Whisper pipeline
-- [ ] Generate unified `transcript.json`
-- [ ] Improve error handling
-- [ ] Validate uploaded file types
-- [ ] Automatic cleanup of temporary jobs
+- [x] Upload pipeline
+- [x] Job system
+- [x] Artifact storage
+- [x] Cleanup service
+
+## Audio
+
+- [x] FFmpeg preprocessing
+- [x] Demucs vocal separation
+
+## Identification
+
+- [x] Chromaprint
+- [x] AcoustID
+- [x] MusicBrainz
+- [x] LRCLIB
+
+## AI
+
+- [x] Faster-Whisper integration
+- [x] SpeechEngine abstraction
+- [x] QualityEvaluator
+- [x] Serializer
+- [x] ChunkTranscriber
+- [x] ChunkMerger
+- [x] LanguageDetector
+- [x] LanguageIdentifier abstraction
+- [x] Modular orchestration
+
+## Output
+
+- [x] transcript.json
+- [x] transcript.txt
+- [x] subtitles.srt
+- [x] subtitles.vtt
 
 ---
 
-## Frontend
+# Phase 2 — Multilingual Engine 🚧
 
-- [ ] Integrate React Router
-- [ ] Connect Viewer page
-- [ ] Improve upload progress states
-- [ ] Better error handling
-- [ ] Audio playback synchronization
+## Language Detection
 
----
+- [ ] Sliding-window language detection
+- [ ] Overlapping detection windows
+- [ ] Confidence smoothing
+- [ ] Duration-weighted dominant language
+- [ ] Real multilingual language regions
+- [ ] Mashup support
 
-# 🎨 UI Refinement
+## Chunk Processing
 
-## Upload Card
+- [ ] Language-aware chunk transcription
+- [ ] Parallel chunk processing
+- [ ] Smart chunk scheduling
+- [ ] Automatic timestamp stitching
 
-- [ ] Refine spacing
-- [ ] Reduce overall height
-- [ ] Improve icon/title spacing
-- [ ] Keep upload button centered
+## Accuracy
 
----
-
-## Song Information
-
-- [ ] Better typography hierarchy
-- [ ] Improve artwork alignment
-- [ ] Reposition match badge
-- [ ] Better confidence placement
+- [ ] Candidate ranking
+- [ ] Improved hallucination detection
+- [ ] Better quality scoring
+- [ ] Automatic retry strategy
+- [ ] Confidence calibration
 
 ---
 
-## Transcript
+# Phase 3 — Subtitle Intelligence
 
-- [ ] Increase readability
-- [ ] Improve padding
-- [ ] Better line height
-- [ ] Refine scrolling experience
-
----
-
-## Global
-
-- [ ] Reduce heavy shadows
-- [ ] Standardize card radius
-- [ ] Standardize button heights
-- [ ] Improve spacing consistency
+- [ ] Translation
+- [ ] Romanization
+- [ ] Karaoke subtitles
+- [ ] Word-level timestamps
+- [ ] Speaker labels
+- [ ] Metadata enrichment
 
 ---
 
-# 📖 Documentation
+# Phase 4 — Frontend
 
-- [x] Professional README
-- [ ] MIT License
-- [ ] GitHub repository topics
-- [ ] Screenshots
-- [ ] Architecture diagram
-- [ ] Installation guide
-
----
-
-# 🎯 Future Ideas
-
-- [ ] Batch processing
-- [ ] Docker support
-- [ ] Public demo
+- [ ] Waveform viewer
+- [ ] Subtitle editor
+- [ ] Timeline editor
+- [ ] Multi-track viewer
+- [ ] Live progress updates
+- [ ] Drag-and-drop uploads
 
 ---
 
-# ✅ Completed
+# Phase 5 — Performance
 
-- [x] Express backend
-- [x] React frontend
-- [x] Audio upload
-- [x] FFmpeg integration
-- [x] Chromaprint fingerprinting
-- [x] AcoustID lookup
-- [x] MusicBrainz metadata
-- [x] LRCLIB integration
-- [x] TXT generation
-- [x] SRT generation
-- [x] VTT generation
-- [x] StudioWorkspace migrated to SongScribeContext
-- [x] Modern dashboard UI
-- [x] SongScribe branding (v1)
-- [x] README rewrite
+- [ ] GPU benchmarking
+- [ ] Parallel transcription
+- [ ] Model caching
+- [ ] Faster chunk extraction
+- [ ] Pipeline profiling
+- [ ] Memory optimization
 
 ---
 
-# 🏁 Version 1.0 Goal
+# Phase 6 — Developer Experience
 
-The first public release will be considered complete when:
+- [ ] Comprehensive unit tests
+- [ ] Integration tests
+- [ ] Benchmark suite
+- [ ] Debug artifact viewer
+- [ ] Performance dashboard
+- [ ] API documentation
 
-- Upload pipeline is stable.
-- Unified transcript generation is complete.
-- Interactive Viewer is functional.
-- Click-to-seek works.
-- Active subtitle highlighting works.
-- Auto-scroll works.
-- Documentation is complete.
+---
 
-# SongScribe TODO
+# Phase 7 — Future
 
-## Progress
+## AI Engines
 
-Backend ██████████ 95%
+- [ ] WhisperX
+- [ ] NVIDIA Canary
+- [ ] Parakeet
+- [ ] Distil-Whisper
 
-Frontend ███████░░░ 70%
+## Language Identification
 
-Documentation ████████░░ 80%
+- [ ] VoxLingua107
+- [ ] MMS-LID
+- [ ] FastText
+- [ ] Ensemble language detection
 
-Overall ████████░░ 82%
+## Advanced Features
+
+- [ ] Speaker diarization
+- [ ] Emotion detection
+- [ ] Instrument recognition
+- [ ] Chord detection
+- [ ] Beat detection
+- [ ] Desktop application
+- [ ] Cloud deployment
+- [ ] Plugin system
+
+---
+
+# Known Issues
+
+- [ ] Whisper occasionally hallucinates lyrics.
+- [ ] Low-vocal songs reduce transcription quality.
+- [ ] Long songs are slower than desired.
+- [ ] Compatibility LanguageDetector still needs replacement with real window-based detection.
+
+---
+
+# Current Focus
+
+**Next Milestone**
+
+Implement true sliding-window language detection using:
+
+- 5-second windows
+- 2.5-second overlap
+- FFmpeg window extraction
+- WhisperLanguageIdentifier
+- ChunkMerger integration
+
+This milestone enables proper multilingual transcription for mashups and songs with language changes.

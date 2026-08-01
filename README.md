@@ -1,101 +1,175 @@
-<p align="center">
-  <img src="branding/songscribe-icon.png" alt="SongScribe Logo" width="180">
-</p>
+# SongScribe
 
-<h1 align="center">SongScribe</h1>
-
-<p align="center">
-
-![Status](https://img.shields.io/badge/status-active%20development-8A2BE2)
-![Frontend](https://img.shields.io/badge/frontend-React-61DAFB)
-![Backend](https://img.shields.io/badge/backend-Express-000000)
-![Python](https://img.shields.io/badge/AI-Python-3776AB)
-![License](https://img.shields.io/badge/license-All%20Rights%20Reserved-red)
-![Source](https://img.shields.io/badge/source-available-blue)
-
-</p>
+> An AI-powered music transcription platform built to accurately transcribe songs, spoken audio, and multilingual content through a modular, extensible transcription pipeline.
 
 ---
 
-## 🎵 Overview
+# Overview
 
-SongScribe is an AI-powered subtitle generation application designed to generate accurate subtitles for both **music** and **spoken audio**.
+SongScribe is an end-to-end transcription platform designed specifically for music.
 
-Rather than relying entirely on speech transcription, SongScribe intelligently identifies songs using audio fingerprinting and attempts to retrieve professionally synchronized lyrics first. When synchronized lyrics are unavailable, it automatically falls back to AI transcription using Faster-Whisper.
+Unlike traditional speech-to-text systems, SongScribe first attempts to identify a song using audio fingerprinting. When synchronized lyrics are available, they are retrieved directly. Otherwise, the platform falls back to a fully AI-powered transcription pipeline with vocal isolation, language detection, quality evaluation, and subtitle generation.
 
-The resulting transcript can be explored in an interactive viewer or exported as industry-standard subtitle formats.
-
----
-
-# ✨ Features
-
-- 🎵 Audio fingerprinting using Chromaprint
-- 🔍 Song identification with AcoustID
-- 🎼 Metadata retrieval through MusicBrainz
-- 📚 Synchronized lyrics via LRCLIB
-- 🤖 AI transcription fallback using Faster-Whisper
-- 📝 Unified transcript generation
-- 🎧 Interactive transcript viewer
-- 🖱 Click transcript to seek playback
-- ✨ Active transcript highlighting
-- 📜 Automatic transcript scrolling
-- 🎬 Export subtitles as:
-  - TXT
-  - SRT
-  - VTT
-- 🌙 Modern React interface
-- 📂 Local processing with downloadable outputs
+The project is designed around a modular architecture so individual AI components can evolve independently without changing the public API.
 
 ---
 
-# 🏗 Pipeline
+# Features
 
-```text
-                 Upload Audio
+## Song Identification
+
+- Chromaprint audio fingerprinting
+- AcoustID lookup
+- MusicBrainz metadata retrieval
+- LRCLIB synchronized lyrics
+
+---
+
+## AI Transcription
+
+- FFmpeg preprocessing
+- Demucs vocal separation
+- Faster-Whisper transcription
+- Automatic language detection
+- Quality evaluation
+- Modular orchestration pipeline
+- Artifact-based processing
+
+---
+
+## Subtitle Generation
+
+Outputs include:
+
+- transcript.json
+- transcript.txt
+- subtitles.srt
+- subtitles.vtt
+
+---
+
+## Frontend
+
+- Interactive transcript viewer
+- Audio playback
+- Click-to-seek transcript
+- Auto-scrolling subtitles
+- Responsive React interface
+
+---
+
+# Architecture
+
+Current AI pipeline:
+
+```
+Upload
+   │
+Fingerprint
+   │
+AcoustID
+   │
+┌───────────────┐
+│ Match Found?  │
+└──────┬────────┘
+       │
+   Yes │                    No
+       │
+MusicBrainz          FFmpeg
+       │                │
+LRCLIB Lyrics      Demucs
+       │                │
+Transcript      Language Detection
                       │
-                      ▼
-           Generate Fingerprint
+                 Chunk Merging
                       │
-                      ▼
-             AcoustID Lookup
+               Chunk Transcription
                       │
-                      ▼
-          Retrieve Song Metadata
+              Quality Evaluation
                       │
-                      ▼
-               Query LRCLIB
-             ┌──────────────┐
-             │              │
-      Lyrics Found      No Lyrics
-             │              │
-             ▼              ▼
-         Parse LRC     Faster-Whisper
-             │              │
-             └──────┬───────┘
-                    ▼
-          Unified Transcript
-                    │
-      ┌─────────────┼─────────────┐
-      ▼             ▼             ▼
- transcript.txt  subtitles   Interactive
-                 (.srt/.vtt)   Viewer
+             Unified Transcript
+                      │
+          TXT • JSON • SRT • VTT
 ```
 
 ---
 
-# ⚙ Tech Stack
+# AI Architecture
+
+The AI subsystem is intentionally modular.
+
+```
+SpeechEngine
+      │
+      └── FasterWhisperEngine
+
+LanguageIdentifier
+      │
+      └── WhisperLanguageIdentifier
+
+LanguageDetector
+      │
+ChunkMerger
+      │
+ChunkTranscriber
+      │
+TranscriptionOrchestrator
+      │
+QualityEvaluator
+      │
+Serializer
+```
+
+Every component has a single responsibility and can be replaced independently.
+
+---
+
+# Project Structure
+
+```
+SongScribe/
+
+backend/
+frontend/
+ai/
+
+backend/jobs/
+
+    <job-id>/
+
+        input/
+
+            original.mp3
+            audio.wav
+
+        separated/
+
+            vocals.wav
+            no_vocals.wav
+
+        output/
+
+            transcript.json
+            transcript.txt
+            subtitles.srt
+            subtitles.vtt
+```
+
+---
+
+# Tech Stack
 
 ## Frontend
 
 - React
-- React Router
 - Vite
-- Context API
+- React Router
 - Axios
 
 ## Backend
 
-- Express.js
+- Node.js
+- Express
 - Multer
 - FFmpeg
 - Chromaprint
@@ -105,140 +179,94 @@ The resulting transcript can be explored in an interactive viewer or exported as
 
 ## AI
 
-- Faster-Whisper
 - Python
+- Faster-Whisper
+- CTranslate2
+- Demucs
+- PyTorch
 
 ---
 
-# 📂 Project Structure
+# Current Capabilities
 
-```text
-SongScribe/
-
-├── frontend/
-│   ├── src/
-│   │   ├── pages/
-│   │   │   ├── Home.jsx
-│   │   │   └── ViewerPage.jsx
-│   │   ├── context/
-│   │   ├── components/
-│   │   └── ...
-│   ├── public/
-│   └── package.json
-│
-├── backend/
-│   ├── providers/
-│   ├── routes/
-│   ├── services/
-│   ├── jobs/
-│   └── package.json
-│
-├── ai/
-│
-├── branding/
-│
-└── README.md
-```
+- Audio fingerprinting
+- Song identification
+- Metadata retrieval
+- Lyrics retrieval
+- Vocal separation
+- AI transcription
+- Language detection
+- Chunk-based transcription architecture
+- Quality evaluation
+- Subtitle generation
+- Artifact-based job storage
 
 ---
 
-# 🚀 Getting Started
+# Current Limitations
 
-## Clone the repository
+Current language detection uses a compatibility implementation.
 
-```bash
-git clone https://github.com/wannabeCODER69/SongScribe.git
+The modular multilingual pipeline has already been implemented, but true per-window multilingual language detection is still under development.
 
-cd SongScribe
-```
+Accuracy still depends on:
 
-## Backend
-
-```bash
-cd backend
-
-npm install
-
-npm start
-```
-
-## Frontend
-
-```bash
-cd frontend
-
-npm install
-
-npm run dev
-```
+- vocal quality
+- background instrumentation
+- Whisper model limitations
+- availability of synchronized lyrics
 
 ---
 
-# 🗺 Roadmap
+# Roadmap
 
-## ✅ Completed
+## High Priority
 
-- Modern React + Vite frontend
-- Express backend
-- Audio upload pipeline
-- Audio extraction using FFmpeg
-- Song fingerprint generation
-- AcoustID integration
-- MusicBrainz metadata lookup
-- LRCLIB synchronized lyrics retrieval
-- Faster-Whisper transcription fallback
-- Unified transcript generation
-- Interactive transcript viewer
-- Click-to-seek playback
-- Active transcript highlighting
-- Automatic transcript scrolling
-- TXT export
-- SRT export
-- VTT export
+- Sliding-window language detection
+- True multilingual transcription
+- Candidate ranking
+- Improved quality scoring
+- Better hallucination detection
+- Job progress API
 
----
+## Medium Priority
 
-## 🚧 In Progress
-
-- Viewer UI polish
-- Improved responsive layout
-- Minor UX refinements
-
----
-
-## 💡 Future
-
+- Translation
+- Romanization
+- Waveform visualization
 - Batch processing
-- Plugin architecture
+- Download manager
+
+## Future
+
+- WhisperX support
+- NVIDIA Canary support
+- Parakeet support
+- Speaker diarization
+- Plugin system
 - Desktop application
-- Optional cloud deployment
+- Cloud deployment
 
 ---
 
-# 🤝 Contributing
+# Development Principles
 
-Suggestions, bug reports, and feature requests are always welcome.
+SongScribe follows several architectural principles:
 
-If you'd like to contribute code, please open an Issue first so we can discuss the proposed change.
+- Modular AI components
+- Stable public JSON API
+- Artifact-based processing
+- Dependency inversion
+- Extensible engine abstractions
+- Replaceable AI backends
+- Reproducible transcription pipeline
 
 ---
 
-# 📜 License
+# License
 
 Copyright © 2026 Gairik Kairy.
 
-This repository is publicly available for learning, code review, and portfolio demonstration.
+Source available for learning, research, and portfolio purposes.
 
-You are welcome to explore the source code, learn from the implementation, and suggest improvements.
-
-However, copying, redistributing, modifying, or using substantial portions of this project without prior written permission from the author is **not permitted**.
-
-If you'd like to use any part of SongScribe, please contact the author first.
-
----
-
-<p align="center">
-
-Made with ❤️ by **Gairik Kairy**
-
-</p>
+All rights reserved.
